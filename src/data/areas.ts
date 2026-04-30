@@ -133,7 +133,7 @@ export const areas: Area[] = [
       { q: "I drive a lot on NH-85 toward Madurai. What protection do I need?", a: "For sustained highway driving, ceramic alone won't stop stone chips on the front-end. The honest answer for Thiruvankulam customers is partial PPF on the front bumper, hood, and fender edges (the impact zones), with ceramic on the rest of the body for gloss and chemical protection. The combination handles both the physical and the chemical wear." },
       { q: "How often should I wash my car if I'm on the highway daily?", a: "Highway-driven cars accumulate dust and bug residue faster than city cars. We recommend a proper foam wash every 7–10 days, or our monthly subscription if you'd rather just hand it to us. Skipping washes for 3+ weeks lets residue lock in and accelerates coating wear." }
     ],
-    hasSL: {},
+    hasSL: { "ppf": true, "foam-wash": true },
   },
   {
     slug: "chottanikkara",
@@ -182,7 +182,7 @@ export const areas: Area[] = [
       { q: "Can you handle a fleet of company cars from the refinery / SEZ?", a: "Yes — we batch fleet bookings outside peak hours so we can dedicate the spray booth and bays to your fleet. Typical fleet pricing is per-car at standard tier rates, with a small discount on volumes of 5+ cars. WhatsApp us with the count, makes/models, and intended tier and we'll quote a batch schedule." },
       { q: "Industrial dust accumulates fast on my car. Will ceramic actually help?", a: "It helps significantly. Ceramic doesn't prevent dust landing on the car — nothing can — but it dramatically reduces dust adhesion. A weekly rinse on a ceramic-coated car restores the surface; a weekly rinse on uncoated paint just smears the dust around. Industrial-zone cars in Kochi see the biggest practical difference from coating." }
     ],
-    hasSL: {},
+    hasSL: { "ceramic-coating": true, "foam-wash": true },
   },
   {
     slug: "amballoor",
@@ -230,7 +230,7 @@ export const areas: Area[] = [
       { q: "I commute to Kakkanad daily. Worth ceramic on a 2-year-old Creta?", a: "Yes — at the 3-year tier. A Creta on the Kakkanad commute sees daily highway exposure, parking-lot scuffs, monsoon humidity, and regular washes. The 3-year ceramic tier with annual decontamination handles all of that and resells the car better when you upgrade." },
       { q: "Can you arrange pickup from Thiruvaniyoor for service appointments?", a: "For booked appointments at premium tier (3-year ceramic, full PPF, restoration projects), we can arrange WhatsApp pickup. Drop-off at the workshop is fastest for everything else. Message us your location and we'll let you know what's possible." }
     ],
-    hasSL: {},
+    hasSL: { "ceramic-coating": true, "foam-wash": true },
   },
 ];
 
