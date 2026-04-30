@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import TrustRibbon from "../components/TrustRibbon.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppCTA from "../components/WhatsAppCTA.astro";
+import { site } from "../data/site";
+
+const url = `${site.url}/contact`;
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "ContactPage", "@id": `${url}#contact`, name: "Contact Jos Car Care", url, mainEntity: { "@type": "AutomotiveBusiness", name: site.name, telephone: site.phone, address: { "@type": "PostalAddress", streetAddress: site.address.street, addressLocality: site.address.locality, addressRegion: site.address.region, postalCode: site.address.postalCode, addressCountry: site.address.country } } },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: site.url }, { "@type": "ListItem", position: 2, name: "Visit", item: url }] },
+  ],
+};
+---
+
+<BaseLayout title={`Visit ${site.name} | Udayamperoor workshop, Kerala`} description={`Visit our hex-lit workshop on ${site.address.full}. Mon-Sat 9 am-7 pm. WhatsApp ${site.phoneDisplay}.`} canonical={url} schemaJson={schema}>
+  <Header />
+  <TrustRibbon />
+
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Visit</span>
+    </nav>
+  </div>
+
+  <section class="hero-page">
+    <style is:inline>.hero-page::before { background-image: url('/real-photos/jos_ig_07.jpg'); }</style>
+    <div class="container">
+      <div class="eyebrow">Visit · Udayamperoor</div>
+      <h1>Drop your car at our workshop.</h1>
+      <p class="lead">{site.address.full}. We're opposite Manakunnam Village Office, on Police Station Road. WhatsApp first if you want a quote before driving over.</p>
+      <div class="hero-cta-row">
+        <WhatsAppCTA />
+        <a href={`tel:${site.phone}`} class="cta-secondary">Or call {site.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="reveal" style="display:grid; grid-template-columns: 1fr 1.2fr; gap: clamp(2rem, 6vw, 4rem); align-items: stretch;">
+        <div class="contact-card" style="padding: 2rem;">
+          <h3 style="font-size: 0.875rem; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-cream-faint); margin-bottom: 1.25rem;">Workshop</h3>
+          <div class="contact-row">
+            <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div><div class="lbl">Address</div><div class="val">{site.address.full}</div></div>
+          </div>
+          <div class="contact-row">
+            <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div><div class="lbl">Hours</div><div class="val">{site.hours.days} · {site.hours.time}<br/><span style="color:var(--fg-cream-faint); font-size:0.8125rem;">Sundays closed</span></div></div>
+          </div>
+          <div class="contact-row">
+            <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+            <div><div class="lbl">Phone</div><div class="val tabular">{site.phoneDisplay}</div></div>
+          </div>
+          <div class="contact-row">
+            <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.099-.471-.15-.67.15-.197.297-.767.964-.94 1.162-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52"/></svg>
+            <div><div class="lbl">WhatsApp</div><div class="val"><a href={site.whatsappLink} style="color:var(--accent); border-bottom:1px solid currentColor;">Same-day quote →</a></div></div>
+          </div>
+          <div class="contact-row">
+            <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="18" cy="6" r="1"/></svg>
+            <div><div class="lbl">Instagram</div><div class="val"><a href={site.social.instagram} style="color:var(--accent); border-bottom:1px solid currentColor;">@joscarcare</a></div></div>
+          </div>
+        </div>
+        <div style="border-radius: var(--r-lg); overflow: hidden; min-height: 480px; border: 1px solid var(--border-emphasis); position:relative;">
+          <iframe src="https://maps.google.com/maps?q=Jos+Car+Care+Udayamperoor&output=embed&z=15" width="100%" height="100%" style="position:absolute; inset:0; border:0; filter: invert(0.92) hue-rotate(180deg) brightness(0.95) contrast(0.95);" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Jos Car Care location"></iframe>
+        </div>
+      </div>
+      <style is:inline>@media (max-width: 1023px) { section .container > div { grid-template-columns: 1fr !important; } }</style>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

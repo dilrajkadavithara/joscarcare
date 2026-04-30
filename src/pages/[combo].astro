@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import TrustRibbon from "../components/TrustRibbon.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppCTA from "../components/WhatsAppCTA.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import Stars from "../components/Stars.astro";
+
+import { site } from "../data/site";
+import { combos, getCombo } from "../data/combos";
+import { areas } from "../data/areas";
+import { reviews, getReviewsForService } from "../data/reviews";
+import { getService } from "../data/services";
+
+export async function getStaticPaths() {
+  return combos.map((c) => ({
+    params: { combo: c.slug },
+    props: { comboSlug: c.slug },
+  }));
+}
+
+const { comboSlug } = Astro.props;
+const combo = getCombo(comboSlug)!;
+const baseService = combo.baseService ? getService(combo.baseService) : null;
+const url = `${site.url}/${combo.slug}`;
+const featuredReviews = combo.baseService ? getReviewsForService(combo.baseService, 3) : reviews.filter(r => r.isFeatured).slice(0, 3);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    combo.type === "city-hub" && baseService ? {
+      "@type": "Service",
+      "@id": `${url}#service`,
+      name: combo.name,
+      serviceType: baseService.name,
+      description: baseService.longDesc,
+      provider: { "@type": "AutomotiveBusiness", name: site.name, telephone: site.phone, address: { "@type": "PostalAddress", streetAddress: site.address.street, addressLocality: site.address.locality, addressRegion: site.address.region, postalCode: site.address.postalCode, addressCountry: site.address.country } },
+      areaServed: areas.map(a => ({ "@type": "Place", name: a.name })),
+      offers: baseService.snapshot.priceFrom !== "Custom" ? { "@type": "Offer", priceCurrency: "INR", price: baseService.snapshot.priceFrom.replace(",", ""), availability: "https://schema.org/InStock" } : undefined,
+    } : null,
+    combo.type !== "city-hub" ? { "@type": "Article", "@id": `${url}#article`, headline: combo.h1, description: combo.lead, datePublished: "2026-04-30", author: { "@type": "Organization", name: site.name }, publisher: { "@type": "Organization", name: site.name } } : null,
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+        { "@type": "ListItem", position: 2, name: combo.name, item: url },
+      ],
+    },
+  ].filter(Boolean),
+};
+
+const isCityHub = combo.type === "city-hub";
+---
+
+<BaseLayout title={`${combo.name} | ${site.name}`} description={combo.metaDescription} canonical={url} schemaJson={schema}>
+  <Header />
+  <TrustRibbon />
+
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">{combo.name}</span>
+    </nav>
+  </div>
+
+  <section class="hero-page">
+    <style is:inline define:vars={{ heroImg: `url('${combo.heroImage}')` }}>
+      .hero-page::before { background-image: var(--heroImg); }
+    </style>
+    <div class="container">
+      <div class="eyebrow">{combo.eyebrow}</div>
+      <h1>{combo.h1}</h1>
+      <p class="lead">{combo.lead}</p>
+      <div class="hero-cta-row">
+        <WhatsAppCTA />
+        {isCityHub ? <a href="#areas" class="cta-secondary">See coverage areas ↓</a> : <a href="#contact" class="cta-secondary">Talk to us ↓</a>}
+      </div>
+      {baseService && (
+        <div class="hero-trust-line">
+          {baseService.snapshot.priceFrom !== "Custom" && <span class="tabular">Starts at ₹{baseService.snapshot.priceFrom}</span>}
+          <span>{baseService.snapshot.time} {baseService.snapshot.timeUnit} turnaround</span>
+          <span>Imported factory-spec products</span>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {baseService && (
+    <section>
+      <div class="container">
+        <div class="snapshot-grid reveal">
+          <div class="snap-card">
+            <div class="label">What's included</div>
+            <div class="value">{baseService.snapshot.stages} stages</div>
+            <div class="desc">{baseService.snapshot.stagesDesc}</div>
+          </div>
+          <div class="snap-card">
+            <div class="label">How long it takes</div>
+            <div class="value tabular">{baseService.snapshot.time}<span class="unit">{baseService.snapshot.timeUnit}</span></div>
+            <div class="desc">{baseService.snapshot.timeDesc}</div>
+          </div>
+          <div class="snap-card">
+            <div class="label">Pricing</div>
+            <div class="value tabular">{baseService.snapshot.priceFrom === "Custom" ? "Custom" : `₹${baseService.snapshot.priceFrom}`}<span class="unit">{baseService.snapshot.priceFrom === "Custom" ? "quote" : "starts at"}</span></div>
+            <div class="desc">{baseService.snapshot.priceDesc}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section>
+    <div class="container">
+      <div style="display:grid; grid-template-columns: 1.4fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center;" class="reveal">
+        <div>
+          <div class="eyebrow" style="margin-bottom:1.25rem;">{isCityHub ? "What it actually is" : "The breakdown"}</div>
+          <h2 class="h2">{isCityHub ? `Multi-year protection that lasts.` : combo.eyebrow + "."}</h2>
+          <p style="color:var(--fg-cream-dim); font-size:1.0625rem; line-height:1.65; margin-top:1.5rem;">{combo.intro}</p>
+        </div>
+        <div style="aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden;">
+          <img src={combo.heroImage} alt={combo.name} style="width:100%; height:100%; object-fit:cover;" />
+        </div>
+      </div>
+    </div>
+    <style is:inline>@media (max-width: 1023px) { section .container > div { grid-template-columns: 1fr !important; } }</style>
+  </section>
+
+  {isCityHub && baseService && baseService.hasTiers && baseService.tiers && (
+    <section style="background: linear-gradient(180deg, rgba(15, 26, 43, 0.4), transparent);">
+      <div class="container">
+        <div class="reveal" style="margin-bottom:3rem; text-align:center;">
+          <div class="eyebrow" style="justify-content:center; margin-bottom:1rem;">Three tiers</div>
+          <h2 class="h2">Pick the protection that matches how long you'll keep the car.</h2>
+        </div>
+        <div class="tier-grid reveal">
+          {baseService.tiers.map(t => (
+            <article class="tier-card">
+              <div class="name">{t.name}</div>
+              <div class="duration tabular">{t.duration}<small>{t.unit}</small></div>
+              <div class="blurb">{t.blurb}</div>
+              <div class="meta-row"><span class="lbl">Starts at</span><span class="val">{t.price}</span></div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {isCityHub && baseService && (
+    <section id="areas" style="background: linear-gradient(180deg, rgba(15, 26, 43, 0.55), transparent);">
+      <div class="container">
+        <div class="reveal" style="margin-bottom:3rem;">
+          <div class="eyebrow" style="margin-bottom:1rem;">Find your area</div>
+          <h2 class="h2">{baseService.name} across nine Kochi areas.</h2>
+          <p class="lead" style="margin-top:1rem;">All work happens at our Udayamperoor workshop on Police Station Road. Drop-off is fastest. WhatsApp pickup available for nearby areas.</p>
+        </div>
+        <div class="area-cards reveal">
+          {areas.map((a, i) => (
+            <a class={`area-card ${a.isWorkshop ? 'featured' : ''}`} href={a.hasSL[combo.baseService!] ? `/${combo.baseService}-${a.slug}` : "#"}>
+              <div class="area-num">{String(i + 1).padStart(2, "0")}</div>
+              <h3>{a.name}</h3>
+              <p>{a.shortContext}</p>
+              <span class={`arrow ${!a.hasSL[combo.baseService!] ? 'muted' : ''}`}>{a.hasSL[combo.baseService!] ? 'Read details →' : 'Drop at workshop ↗'}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section>
+    <div class="container">
+      <div class="reveal" style="margin-bottom:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">From our Google reviews</div>
+        <h2 class="h2">What customers say after picking up.</h2>
+      </div>
+      <div class={`test-grid ${featuredReviews.length === 2 ? 'cols-2' : ''} reveal`}>
+        {featuredReviews.map(r => (
+          <article class="test-card">
+            <Stars />
+            <p class="test-body">{r.body}</p>
+            <div class="test-author">
+              <div class="test-avatar">{r.initials}</div>
+              <div>
+                <div class="test-meta-name">{r.name}</div>
+                <div class="test-meta-sub">{r.date} · {r.source}</div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+  <Footer />
+</BaseLayout>

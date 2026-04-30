@@ -1,0 +1,352 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import TrustRibbon from "../components/TrustRibbon.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppCTA from "../components/WhatsAppCTA.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import Stars from "../components/Stars.astro";
+
+import { site } from "../data/site";
+import { services, getService } from "../data/services";
+import { areas, getArea } from "../data/areas";
+import { serviceLocations } from "../data/serviceLocations";
+import { getReviewsForService } from "../data/reviews";
+import { getCombo } from "../data/combos";
+
+export async function getStaticPaths() {
+  return serviceLocations.map(({ service, area }) => ({
+    params: { serviceLocation: `${service}-${area}` },
+    props: { serviceSlug: service, areaSlug: area },
+  }));
+}
+
+const { serviceSlug, areaSlug } = Astro.props;
+const svc = getService(serviceSlug)!;
+const area = getArea(areaSlug)!;
+const cityHub = getCombo(`${serviceSlug}-kochi`);
+const reviewsForService = getReviewsForService(serviceSlug);
+
+// Other services available in this same area (cross-vertical links)
+const otherServicesInArea = services
+  .filter((s) => s.slug !== serviceSlug && area.hasSL[s.slug])
+  .slice(0, 4);
+
+// Same service in nearby Tier-A areas (vertical-area links)
+const sameServiceOtherAreas = areas
+  .filter((a) => a.slug !== areaSlug && a.hasSL[serviceSlug])
+  .slice(0, 4);
+
+const url = `${site.url}/${serviceSlug}-${areaSlug}`;
+const title = `${svc.name} in ${area.name} — ${site.name}`;
+const description = `${svc.shortDesc} ${area.shortContext} Available at our Udayamperoor workshop. WhatsApp for a same-day quote.`;
+
+const standardFaqs = [
+  { q: `How much does ${svc.name.toLowerCase()} cost in ${area.name}?`, a: `${svc.name} starts at ${svc.snapshot.priceFrom === "Custom" ? "a custom quote" : `₹${svc.snapshot.priceFrom}`}. ${svc.snapshot.priceDesc} WhatsApp us for a same-day quote.` },
+  { q: `How long does it take?`, a: `Standard ${svc.name.toLowerCase()} takes ${svc.snapshot.time} ${svc.snapshot.timeUnit}. ${svc.snapshot.timeDesc}` },
+  { q: `What products do you use?`, a: `Imported, factory-spec products with manufacturer-backed warranty paperwork at handover.` },
+];
+const allFaqs = [...standardFaqs, ...area.areaFaqs];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": `${url}#service`,
+      name: `${svc.name} in ${area.name}`,
+      serviceType: svc.name,
+      description: svc.longDesc,
+      provider: {
+        "@type": "AutomotiveBusiness",
+        name: site.name,
+        telephone: site.phone,
+        address: { "@type": "PostalAddress", streetAddress: site.address.street, addressLocality: site.address.locality, addressRegion: site.address.region, postalCode: site.address.postalCode, addressCountry: site.address.country },
+      },
+      areaServed: { "@type": "Place", name: area.name },
+      offers: svc.snapshot.priceFrom !== "Custom" ? {
+        "@type": "Offer", priceCurrency: "INR",
+        price: svc.snapshot.priceFrom.replace(",", ""),
+        priceSpecification: { "@type": "PriceSpecification", priceCurrency: "INR", minPrice: svc.snapshot.priceFrom.replace(",", "") },
+        availability: "https://schema.org/InStock",
+      } : undefined,
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+        cityHub ? { "@type": "ListItem", position: 2, name: svc.name, item: `${site.url}/${cityHub.slug}` } : null,
+        { "@type": "ListItem", position: cityHub ? 3 : 2, name: area.name, item: url },
+      ].filter(Boolean),
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: allFaqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} canonical={url} schemaJson={schema}>
+  <Header />
+  <TrustRibbon />
+
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      {cityHub ? <><a href={`/${cityHub.slug}`}>{svc.name}</a><span class="sep">/</span></> : null}
+      <span class="current">{area.name}</span>
+    </nav>
+  </div>
+
+  <section class="hero-page">
+    <style is:inline define:vars={{ heroImg: `url('${svc.image}')` }}>
+      .hero-page::before { background-image: var(--heroImg); }
+    </style>
+    <div class="container">
+      <div class="eyebrow">{svc.name} · {area.name}</div>
+      <h1>{svc.name} in {area.name}.</h1>
+      <p class="lead">{svc.longDesc}</p>
+      <div class="hero-cta-row">
+        <WhatsAppCTA message={`Hi%2C%20I%27d%20like%20a%20${encodeURIComponent(svc.name.toLowerCase())}%20quote%20for%20my%20car%20in%20${area.name}`} />
+        <a href="#process" class="cta-secondary">See the process ↓</a>
+      </div>
+      <div class="hero-trust-line">
+        {svc.snapshot.priceFrom !== "Custom" && <span class="tabular">Starts at ₹{svc.snapshot.priceFrom}</span>}
+        <span>{svc.snapshot.time} {svc.snapshot.timeUnit} turnaround</span>
+        <span>WhatsApp {site.phoneDisplay}</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="snapshot-grid reveal">
+        <div class="snap-card">
+          <div class="label">What's included</div>
+          <div class="value">{svc.snapshot.stages} stages</div>
+          <div class="desc">{svc.snapshot.stagesDesc}</div>
+        </div>
+        <div class="snap-card">
+          <div class="label">How long it takes</div>
+          <div class="value tabular">{svc.snapshot.time}<span class="unit">{svc.snapshot.timeUnit}</span></div>
+          <div class="desc">{svc.snapshot.timeDesc}</div>
+        </div>
+        <div class="snap-card">
+          <div class="label">Pricing</div>
+          <div class="value tabular">{svc.snapshot.priceFrom === "Custom" ? "Custom" : `₹${svc.snapshot.priceFrom}`}<span class="unit">{svc.snapshot.priceFrom === "Custom" ? "quote" : "starts at"}</span></div>
+          <div class="desc">{svc.snapshot.priceDesc}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="local-context">
+    <div class="container">
+      <div class="local-grid reveal">
+        <div>
+          <div class="eyebrow" style="margin-bottom:1rem;">Local to {area.name}</div>
+          <h2 class="h2">{area.isWorkshop ? `Five minutes from anywhere in the area.` : `Drive to our Udayamperoor workshop — ${area.driveRoute.split(":")[1] ? area.driveRoute.split(":")[1].trim().split(".")[0] : "easy from " + area.name}.`}</h2>
+        </div>
+        <div class="local-body">
+          {area.paragraphs.map((p) => (<p>{p}</p>))}
+        </div>
+      </div>
+
+      <div class="local-meta-grid reveal">
+        <div class="local-meta-card">
+          <div class="meta-label">Drive route</div>
+          <p>{area.driveRoute}</p>
+        </div>
+        <div class="local-meta-card">
+          <div class="meta-label">Local landmarks</div>
+          <ul class="landmark-list">
+            {area.landmarks.map((l) => <li>{l}</li>)}
+          </ul>
+        </div>
+        <div class="local-meta-card">
+          <div class="meta-label">Who's driving here</div>
+          <p>{area.demographics}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {svc.hasTiers && svc.tiers && (
+    <section style="background: linear-gradient(180deg, transparent, rgba(15, 26, 43, 0.4));">
+      <div class="container">
+        <div class="reveal" style="margin-bottom:3rem; text-align:center;">
+          <div class="eyebrow" style="justify-content:center; margin-bottom:1rem;">Three tiers</div>
+          <h2 class="h2">{svc.tierIntro}</h2>
+        </div>
+        <div class="tier-grid reveal">
+          {svc.tiers.map((t) => (
+            <article class="tier-card">
+              <div class="name">{t.name}</div>
+              <div class="duration tabular">{t.duration}<small>{t.unit}</small></div>
+              <div class="blurb">{t.blurb}</div>
+              <div class="meta-row"><span class="lbl">Starts at</span><span class="val">{t.price}</span></div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section id="process">
+    <div class="container">
+      <div class="reveal" style="margin-bottom:3rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">How it works</div>
+        <h2 class="h2">Four steps. No surprises.</h2>
+      </div>
+      <div class="process-grid reveal">
+        <div class="process-step"><div class="process-num tabular">01</div><h3>Inspection</h3><p>Drive in or WhatsApp photos. We assess and recommend.</p></div>
+        <div class="process-step"><div class="process-num tabular">02</div><h3>Quote</h3><p>Written quote, transparent pricing, before any work starts.</p></div>
+        <div class="process-step"><div class="process-num tabular">03</div><h3>Service</h3><p>{svc.snapshot.stagesDesc}</p></div>
+        <div class="process-step"><div class="process-num tabular">04</div><h3>Handover</h3><p>Walk-around, care guide, warranty paperwork. Done.</p></div>
+      </div>
+    </div>
+  </section>
+
+  {otherServicesInArea.length > 0 && (
+    <section class="cross-vertical" style="background: linear-gradient(180deg, rgba(15, 26, 43, 0.5), transparent);">
+      <div class="container">
+        <div class="reveal" style="margin-bottom:2.5rem;">
+          <div class="eyebrow" style="margin-bottom:1rem;">Other services in {area.name}</div>
+          <h2 class="h2">Also available at our workshop, for {area.name} customers.</h2>
+        </div>
+        <div class="cross-vertical-grid reveal">
+          {otherServicesInArea.map((s) => (
+            <a href={`/${s.slug}-${areaSlug}`} class="cross-card">
+              <div class="cross-num tabular">{s.number}</div>
+              <h3>{s.name} in {area.name}</h3>
+              <p>{s.outcomeDesc}</p>
+              <span class="cross-arrow">Read details →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section style="background: linear-gradient(180deg, rgba(15, 26, 43, 0.4), transparent);">
+    <div class="container">
+      <div class="reveal" style="margin-bottom:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">Real work · From the floor</div>
+        <h2 class="h2">Cars we've worked on this year.</h2>
+      </div>
+      <div class="gallery-grid reveal">
+        <figure class="gallery-tile"><img src="/real-photos/jos_ig_12.jpg" alt={`Black BMW 3-Series after coating in our Udayamperoor workshop — serving ${area.name}`} loading="lazy" /><figcaption class="caption"><span class="vehicle">BMW 3-Series</span><span class="meta-cap">Coating · Udayamperoor workshop</span></figcaption></figure>
+        <figure class="gallery-tile"><img src="/real-photos/1.png" alt="White Toyota Fortuner under hexagonal lighting at Jos Car Care" loading="lazy" /><figcaption class="caption"><span class="vehicle">Toyota Fortuner</span><span class="meta-cap">Pre-monsoon coating</span></figcaption></figure>
+        <figure class="gallery-tile"><img src="/real-photos/jos_ig_08.jpg" alt="Tata Harrier EV handover at Jos Car Care Udayamperoor" loading="lazy" /><figcaption class="caption"><span class="vehicle">Tata Harrier EV</span><span class="meta-cap">After self-heal coating</span></figcaption></figure>
+        <figure class="gallery-tile"><img src="/real-photos/3.png" alt="Owner with Rolls-Royce Phantom at Jos Car Care" loading="lazy" /><figcaption class="caption"><span class="vehicle">Rolls-Royce Phantom</span><span class="meta-cap">Premium client</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="reveal" style="margin-bottom:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">Why Jos Car Care</div>
+        <h2 class="h2" style="max-width:18ch;">Four things that come standard.</h2>
+      </div>
+      <div class="pillars-grid reveal">
+        <div class="pillar"><div class="pillar-num tabular">01</div><h3>Since 2007</h3><p>Owner-run workshop. The same hands that quote your job do the work.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">02</div><h3>Factory-spec materials</h3><p>Imported, manufacturer-authorised products. Warranty paperwork at handover.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">03</div><h3>Transparent pricing</h3><p>Quote in writing before work starts. What we say is what you pay.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">04</div><h3>Free vehicle inspection</h3><p>Drive in or WhatsApp photos. Honest assessment of what your car needs.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="reveal" style="margin-bottom:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">From our Google reviews</div>
+        <h2 class="h2">What customers say after picking up.</h2>
+      </div>
+      <div class="test-grid cols-2 reveal">
+        {reviewsForService.map((r) => (
+          <article class="test-card">
+            <Stars />
+            <p class="test-body">{r.body}</p>
+            <div class="test-author">
+              <div class="test-avatar">{r.initials}</div>
+              <div>
+                <div class="test-meta-name">{r.name}</div>
+                <div class="test-meta-sub">{r.date} · {r.source}</div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="reveal" style="margin-bottom:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">Frequently asked — {area.name}</div>
+        <h2 class="h2">Cost, time, drive-route, and area-specific questions.</h2>
+      </div>
+      <div class="faq-wrap reveal">
+        {allFaqs.map((f, i) => (
+          <div class={`faq-item ${i === 0 ? 'open' : ''}`}>
+            <button class="faq-q">{f.q} <span class="faq-icon"></span></button>
+            <div class="faq-a"><p set:html={f.a}></p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+
+  {sameServiceOtherAreas.length > 0 && (
+    <div class="areas-strip">
+      <div class="areas-strip-inner">
+        <div class="label">{svc.name} in other areas</div>
+        {areas.map((a) => (
+          a.slug === areaSlug
+            ? <span class="current">{a.name}</span>
+            : (a.hasSL[serviceSlug]
+                ? <a href={`/${serviceSlug}-${a.slug}`}>{a.name}</a>
+                : <a href={cityHub ? `/${cityHub.slug}` : "/ceramic-coating-kochi"}>{a.name}</a>)
+        ))}
+      </div>
+    </div>
+  )}
+
+  <Footer />
+
+  <style>
+    .local-context { padding-top: clamp(3.5rem, 9vw, 7rem); padding-bottom: clamp(3.5rem, 9vw, 7rem); }
+    .local-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; margin-bottom: 3rem; }
+    @media (max-width: 1023px) { .local-grid { grid-template-columns: 1fr; } }
+    .local-grid h2 { max-width: 16ch; }
+    .local-body p { color: var(--fg-cream-dim); margin-bottom: 1.25rem; max-width: 64ch; font-size: 1.0625rem; line-height: 1.7; }
+    .local-body p:last-child { margin-bottom: 0; }
+    .local-body strong { color: var(--fg-cream); font-weight: 600; }
+
+    .local-meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle); }
+    @media (max-width: 1023px) { .local-meta-grid { grid-template-columns: 1fr; } }
+    .local-meta-card { padding: 1.5rem 1.5rem; background: rgba(15, 26, 43, 0.4); border: 1px solid var(--border-subtle); border-radius: var(--r-md); }
+    .local-meta-card .meta-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.875rem; }
+    .local-meta-card p { color: var(--fg-cream-dim); font-size: 0.9375rem; line-height: 1.6; }
+    .landmark-list { list-style: none; padding: 0; margin: 0; }
+    .landmark-list li { padding: 0.4rem 0; color: var(--fg-cream-dim); font-size: 0.9375rem; line-height: 1.45; padding-left: 1.25rem; position: relative; }
+    .landmark-list li::before { content: '◆'; position: absolute; left: 0; top: 0.5rem; color: var(--accent); font-size: 0.5rem; }
+
+    .cross-vertical-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    @media (max-width: 1023px) { .cross-vertical-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .cross-vertical-grid { grid-template-columns: 1fr; } }
+    .cross-card { display: block; padding: 1.75rem; background: rgba(15, 26, 43, 0.5); border: 1px solid var(--border-subtle); border-radius: var(--r-md); transition: all var(--t-std); }
+    .cross-card:hover { background: rgba(15, 26, 43, 0.8); border-color: var(--accent); transform: translateY(-3px); }
+    .cross-num { font-family: var(--font-display); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 1rem; }
+    .cross-card h3 { font-size: 1.0625rem; margin-bottom: 0.5rem; transition: color var(--t-quick); }
+    .cross-card:hover h3 { color: var(--accent); }
+    .cross-card p { color: var(--fg-cream-dim); font-size: 0.875rem; line-height: 1.5; margin-bottom: 1rem; }
+    .cross-arrow { font-size: 0.8125rem; color: var(--accent); font-weight: 500; }
+  </style>
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import TrustRibbon from "../../components/TrustRibbon.astro";
+import Footer from "../../components/Footer.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+import { site } from "../../data/site";
+import { blogs } from "../../data/blogs";
+
+const url = `${site.url}/blog`;
+---
+
+<BaseLayout title={`Blog | ${site.name}`} description="Buyer's guides and Kerala-specific insights on coatings, paint, detailing, and protection from the team at Jos Car Care, Udayamperoor." canonical={url}>
+  <Header />
+  <TrustRibbon />
+
+  <section style="padding: clamp(3rem, 7vw, 5rem) 0;">
+    <div class="container container-narrow">
+      <div class="eyebrow" style="margin-bottom:1.25rem;">Blog</div>
+      <h1 class="h1" style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom:1.25rem;">Buyer's guides for Kerala drivers.</h1>
+      <p class="lead">Honest writing on coatings, paint, and protection. From the workshop floor at Udayamperoor.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="container container-narrow">
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;" class="reveal">
+        {blogs.map(b => (
+          <a href={`/blog/${b.slug}`} style="display:block; padding:0; border-radius:var(--r-md); overflow:hidden; background:rgba(20,32,50,0.55); border:1px solid var(--border-subtle); transition:all var(--t-std);">
+            <div style="aspect-ratio:16/9; overflow:hidden;">
+              <img src={b.heroImage} alt={b.heroImageAlt} style="width:100%; height:100%; object-fit:cover;" loading="lazy" />
+            </div>
+            <div style="padding:1.5rem 1.5rem 1.75rem;">
+              <div style="font-size:0.7rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.875rem;">{b.readingTime} read</div>
+              <h2 style="font-family:var(--font-display); font-weight:700; font-size:1.375rem; line-height:1.2; letter-spacing:-0.015em; margin-bottom:0.75rem;">{b.title}</h2>
+              <p style="color:var(--fg-cream-dim); font-size:0.9375rem; line-height:1.55;">{b.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+      <style is:inline>@media (max-width: 1023px) { section .container > div[style*='3'] { grid-template-columns: 1fr !important; } }</style>
+    </div>
+  </section>
+
+  <FinalCTA />
+  <Footer />
+</BaseLayout>

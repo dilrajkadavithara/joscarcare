@@ -1,0 +1,51 @@
+---
+import { site } from "../data/site";
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="margin-bottom:1rem;">
+          <span class="logo-mark"><span>J</span></span>
+          {site.name}
+        </a>
+        <p>Udayamperoor's car-detailing studio since {site.founded}. Coatings, paint, polish, restoration. Nine areas around Kochi.</p>
+      </div>
+      <div>
+        <h4>Coatings</h4>
+        <ul>
+          <li><a href="/ceramic-coating-kochi">Ceramic coating</a></li>
+          <li><a href="/ppf-kochi">Paint protection film</a></li>
+          <li><a href="/coating-comparison">Coating comparison</a></li>
+          <li><a href="/ppf-vs-ceramic-coating">PPF vs Ceramic</a></li>
+          <li><a href="/ceramic-ppf-combo">Ceramic + PPF combo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Other services</h4>
+        <ul>
+          <li><a href="/car-painting-kochi">Car painting</a></li>
+          <li><a href="/painting-denting-combo">Painting + denting</a></li>
+          <li><a href="/paint-correction-udayamperoor">Paint correction</a></li>
+          <li><a href="/scratch-dent-repair-udayamperoor">Scratch & dent</a></li>
+          <li><a href="/restoration-udayamperoor">Restoration</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href={site.whatsappLink}>WhatsApp</a></li>
+          <li><a href={`tel:${site.phone}`}>{site.phoneDisplay}</a></li>
+          <li><a href={site.social.instagram}>Instagram</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/contact">Visit</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 {site.name} · Udayamperoor</span>
+      <span>Built for Kerala drivers</span>
+    </div>
+  </div>
+</footer>

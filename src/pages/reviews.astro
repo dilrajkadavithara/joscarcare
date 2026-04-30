@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import TrustRibbon from "../components/TrustRibbon.astro";
+import Footer from "../components/Footer.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import Stars from "../components/Stars.astro";
+import { site } from "../data/site";
+import { reviews } from "../data/reviews";
+
+const url = `${site.url}/reviews`;
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": `${url}#business`,
+      name: site.name,
+      url: site.url,
+      telephone: site.phone,
+      address: { "@type": "PostalAddress", streetAddress: site.address.street, addressLocality: site.address.locality, addressRegion: site.address.region, postalCode: site.address.postalCode, addressCountry: site.address.country },
+      aggregateRating: { "@type": "AggregateRating", ratingValue: String(site.rating.value), reviewCount: String(site.rating.count), bestRating: "5", worstRating: "1" },
+      review: reviews.filter(r => r.body.length > 20).map(r => ({
+        "@type": "Review",
+        author: { "@type": "Person", name: r.name },
+        datePublished: "2026-01-01",
+        reviewBody: r.body,
+        reviewRating: { "@type": "Rating", ratingValue: String(r.stars), bestRating: "5", worstRating: "1" },
+      })),
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+        { "@type": "ListItem", position: 2, name: "Reviews", item: url },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={`Reviews | ${site.name}`} description={`${site.rating.value} stars from ${site.rating.count} Google reviews. Real customer feedback for Jos Car Care, Udayamperoor.`} canonical={url} schemaJson={schema}>
+  <Header />
+  <TrustRibbon />
+
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Reviews</span>
+    </nav>
+  </div>
+
+  <section class="hero-page" style="--hero-img: url('/media/hero_slides/premium-car-detailing-kochi-workshop.webp');">
+    <style is:inline>.hero-page::before { background-image: url('/media/hero_slides/premium-car-detailing-kochi-workshop.webp'); }</style>
+    <div class="container">
+      <div class="eyebrow">Reviews · Google</div>
+      <h1>{site.rating.value} ★ from {site.rating.count} Google reviews.</h1>
+      <p class="lead">Real customer feedback. Five-star ratings, mixed-feedback ones, and photo-only ratings — all shown.</p>
+      <div class="hero-cta-row">
+        <a href={site.social.googleMaps} class="cta-primary" target="_blank" rel="noopener">View on Google Maps →</a>
+        <a href="#all" class="cta-secondary">Read all reviews ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="all">
+    <div class="container">
+      <div class="reveal" style="margin-bottom:3rem; text-align:center;">
+        <div class="eyebrow" style="justify-content:center; margin-bottom:1rem;">Substantive reviews</div>
+        <h2 class="h2">{reviews.filter(r => r.body.length > 5).length} written reviews from real customers.</h2>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr; gap:1.25rem; max-width:880px; margin:0 auto;" class="reveal">
+        {reviews.map(r => (
+          <article class="test-card" style="aspect-ratio:auto;">
+            <Stars count={r.stars} />
+            <p class="test-body">{r.body || "(Rating only — no written review)"}</p>
+            <div class="test-author">
+              <div class="test-avatar">{r.initials}</div>
+              <div>
+                <div class="test-meta-name">{r.name}</div>
+                <div class="test-meta-sub">{r.date} · {r.source}</div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div style="margin-top:3rem; text-align:center; padding:2rem; background:rgba(15,26,43,0.5); border-radius:var(--r-md); border:1px solid var(--border-subtle); max-width:680px; margin-left:auto; margin-right:auto;">
+        <p style="color:var(--fg-cream-dim);">Every review on our Google listing — visible above. <a href={site.social.googleMaps} style="color:var(--accent); border-bottom:1px solid currentColor;" target="_blank" rel="noopener">Add yours after your service →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+  <Footer />
+</BaseLayout>

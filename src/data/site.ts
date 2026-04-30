@@ -1,0 +1,28 @@
+export const site = {
+  name: "Jos Car Care",
+  tagline: "Coatings, paint, and detailing in Kochi · Since 2007",
+  description: "Premium car detailing in Kochi. Ceramic, graphene, borophine, PPF, painting, restoration. From our hex-lit Udayamperoor workshop, since 2007. WhatsApp for a same-day quote.",
+  url: "https://www.joscarcare.com",
+  founded: "2007",
+  yearsRunning: 19,
+  phone: "+919544874433",
+  phoneDisplay: "095448 74433",
+  whatsappLink: "https://wa.me/919544874433",
+  whatsappQuoteLink: "https://wa.me/919544874433?text=Hi%20Jos%20Car%20Care%2C%20I%27d%20like%20a%20quote",
+  email: "info@joscarcare.com",
+  address: {
+    street: "Police Station Road",
+    locality: "Udayamperoor",
+    region: "Kerala",
+    postalCode: "682305",
+    country: "IN",
+    full: "Police Station Road, Udayamperoor 682305",
+  },
+  geo: { latitude: 9.9143782, longitude: 76.3684393 },
+  hours: { days: "Mon–Sat", time: "9 am–7 pm" },
+  social: {
+    instagram: "https://www.instagram.com/jos_car_care/",
+    googleMaps: "https://www.google.com/maps/place/Jos+Car+Care/@9.9143782,76.3684393,17z",
+  },
+  rating: { value: 4.8, count: 11, max: 5 },
+} as const;

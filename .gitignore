@@ -1,0 +1,31 @@
+# Astro build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.production
+.env.local
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Vercel
+.vercel
+
+# TypeScript build cache
+*.tsbuildinfo

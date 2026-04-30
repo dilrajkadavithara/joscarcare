@@ -1,0 +1,100 @@
+---
+import { site } from "../data/site";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  schemaJson?: any;
+  fixedHeader?: boolean;
+}
+
+const { title, description, canonical, ogImage, schemaJson, fixedHeader = false } = Astro.props;
+const canonicalUrl = canonical || new URL(Astro.url.pathname, site.url).toString();
+const ogImageUrl = ogImage || `${site.url}/og-image.jpg`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:locale" content="en_IN" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet" />
+
+  {schemaJson && <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />}
+
+  <link rel="sitemap" href="/sitemap-index.xml" />
+</head>
+<body>
+  <slot />
+
+  <script>
+    // Reveal observer
+    const reveals = document.querySelectorAll('.reveal, .reveal-stagger');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      reveals.forEach((el) => io.observe(el));
+    } else {
+      reveals.forEach((el) => el.classList.add('in'));
+    }
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach((btn) => {
+      btn.addEventListener('click', () => btn.parentElement?.classList.toggle('open'));
+    });
+    // Rotating ribbon quote
+    const qEl = document.getElementById('ribbonQuote');
+    if (qEl && qEl.dataset.quotes) {
+      const quotes = JSON.parse(qEl.dataset.quotes);
+      let idx = 0;
+      qEl.style.transition = 'opacity 280ms';
+      qEl.style.opacity = '0.7';
+      setInterval(() => {
+        idx = (idx + 1) % quotes.length;
+        qEl.style.opacity = '0';
+        setTimeout(() => { qEl.textContent = quotes[idx]; qEl.style.opacity = '0.7'; }, 280);
+      }, 4500);
+    }
+    // Hero carousel (homepage only)
+    const slides = document.querySelectorAll('.hero-slide');
+    const indicators = document.querySelectorAll('.hero-indicators button');
+    if (slides.length > 1) {
+      let currentSlide = 0;
+      function goTo(idx) {
+        slides[currentSlide].classList.remove('active');
+        indicators[currentSlide]?.classList.remove('active');
+        currentSlide = idx;
+        slides[currentSlide].classList.add('active');
+        indicators[currentSlide]?.classList.add('active');
+      }
+      let timer = setInterval(() => goTo((currentSlide + 1) % slides.length), 5800);
+      indicators.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          goTo(parseInt(btn.dataset.slide || '0', 10));
+          clearInterval(timer);
+          timer = setInterval(() => goTo((currentSlide + 1) % slides.length), 5800);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

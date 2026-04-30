@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import TrustRibbon from "../components/TrustRibbon.astro";
+import Footer from "../components/Footer.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import { site } from "../data/site";
+import { areas } from "../data/areas";
+
+const url = `${site.url}/about`;
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "AboutPage", "@id": `${url}#about`, name: `About ${site.name}`, url, mainEntity: { "@type": "Organization", name: site.name, foundingDate: site.founded, description: site.description } },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: site.url }, { "@type": "ListItem", position: 2, name: "About", item: url }] },
+  ],
+};
+---
+
+<BaseLayout title={`About ${site.name} | Udayamperoor's car-detailing studio since 2007`} description="Owner-run from a hex-lit workshop in Udayamperoor since 2007. Coatings, paint, detailing, restoration. Nine areas around Kochi." canonical={url} schemaJson={schema}>
+  <Header />
+  <TrustRibbon />
+
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">About</span>
+    </nav>
+  </div>
+
+  <section class="hero-page">
+    <style is:inline>.hero-page::before { background-image: url('/real-photos/jos_ig_12.jpg'); }</style>
+    <div class="container">
+      <div class="eyebrow">Our story</div>
+      <h1>Udayamperoor's car-detailing studio. Since 2007.</h1>
+      <p class="lead">Owner-run. Hex-lit workshop. Imported factory-spec materials. Quotes in writing. The way detailing is supposed to work.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container container-narrow">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center;" class="reveal">
+        <div style="aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden;">
+          <img src="/real-photos/jos_ig_12.jpg" alt="Inside Jos Car Care's hex-lit workshop in Udayamperoor" style="width:100%; height:100%; object-fit:cover;" />
+        </div>
+        <div>
+          <p style="color:var(--fg-cream-dim); font-size:1.0625rem; line-height:1.65; margin-bottom:1.25rem;">Jos Car Care has been Udayamperoor's car-detailing studio <strong style="color:var(--fg-cream);">since 2007</strong>. Owner-run from a hex-lit workshop opposite Manakunnam Village Office on Police Station Road.</p>
+          <p style="color:var(--fg-cream-dim); font-size:1.0625rem; line-height:1.65; margin-bottom:1.25rem;">We work on daily-driver hatchbacks, freshly-delivered SUVs, project cars in for restoration, and the occasional luxury client — Phantom included.</p>
+          <p style="color:var(--fg-cream-dim); font-size:1.0625rem; line-height:1.65; margin-bottom:1.25rem;">We use <strong style="color:var(--fg-cream);">imported, factory-spec materials</strong>, quote in writing before any work starts, and ship the car back looking better than it came in.</p>
+          <p style="color:var(--fg-cream-dim); font-size:1.0625rem; line-height:1.65;">No surprises at handover. That's the whole rule.</p>
+        </div>
+      </div>
+    </div>
+    <style is:inline>@media (max-width: 1023px) { section .container > div { grid-template-columns: 1fr !important; } }</style>
+  </section>
+
+  <section style="background: linear-gradient(180deg, rgba(15, 26, 43, 0.5), transparent);">
+    <div class="container">
+      <div class="reveal" style="margin-bottom:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">By the numbers</div>
+        <h2 class="h2">Two decades. Counting.</h2>
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:1rem;" class="pillars-grid reveal">
+        <div class="pillar"><div class="pillar-num tabular">{site.yearsRunning}</div><h3>Years owner-run</h3><p>Since {site.founded}. The same hands that quote your job apply the coating.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">{site.rating.value}</div><h3>Google rating</h3><p>From {site.rating.count} verified reviews. Real customers, real outcomes.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">9</div><h3>Areas served</h3><p>From Udayamperoor to Maradu, Tripunithura, Mulanthuruthy, and beyond.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">11</div><h3>Services offered</h3><p>Coatings, paint, polish, restoration. End-to-end car care under one roof.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="reveal" style="margin-bottom:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:1rem;">What we believe</div>
+        <h2 class="h2" style="max-width:24ch;">Three principles that haven't changed.</h2>
+      </div>
+      <div class="pillars-grid reveal">
+        <div class="pillar"><div class="pillar-num tabular">01</div><h3>Quote first, work second</h3><p>You see the price in writing before any tool touches the car. What we say is what you pay.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">02</div><h3>Right product, not most product</h3><p>If your car needs ceramic, we recommend ceramic. Not a tier above. We earn the long-term customer, not the upsell.</p></div>
+        <div class="pillar"><div class="pillar-num tabular">03</div><h3>Visible work</h3><p>WhatsApp updates at every stage. Photos when something needs your decision. Walk-around at handover. No mysteries.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+  <Footer />
+</BaseLayout>

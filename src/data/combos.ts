@@ -1,0 +1,168 @@
+export interface Combo {
+  slug: string;
+  name: string;
+  type: "city-hub" | "comparison" | "bundle" | "timing" | "vehicle" | "qualifier" | "niche";
+  baseService?: string; // primary service for hubs
+  targetKeyword: string;
+  eyebrow: string;
+  h1: string;
+  lead: string;
+  metaDescription: string;
+  heroImage: string;
+  intro: string;
+  body?: string; // optional richer body
+}
+
+export const combos: Combo[] = [
+  {
+    slug: "ceramic-coating-kochi",
+    name: "Ceramic Coating Kochi",
+    type: "city-hub",
+    baseService: "ceramic-coating",
+    targetKeyword: "ceramic coating kochi",
+    eyebrow: "Ceramic Coating · Kochi",
+    h1: "Ceramic coating across Kochi.",
+    lead: "Multi-year hydrophobic protection from our Udayamperoor workshop. Available in 1-year, 3-year, and 5-year tiers — sized for hatchback through SUV. Drop-off or WhatsApp for a same-day quote.",
+    metaDescription: "Multi-year ceramic coating across Kochi. Three tiers (1, 3, 5 years), starts at ₹12,000. From our Udayamperoor workshop, serving nine areas. WhatsApp for a same-day quote.",
+    heroImage: "/media/hero_slides/premium-car-detailing-kochi-workshop.webp",
+    intro: "Ceramic coating bonds chemically with your car's paint and cures into a hard, transparent layer. Once cured, water beads and rolls off, washes get faster, and the surface picks up resistance to swirl marks and minor scratches. We use imported, factory-spec ceramic products across three tiers, with manufacturer-backed warranty paperwork at handover.",
+  },
+  {
+    slug: "coating-comparison",
+    name: "Ceramic vs Graphene vs Borophine",
+    type: "comparison",
+    targetKeyword: "ceramic vs graphene coating",
+    eyebrow: "Decision Guide",
+    h1: "Ceramic vs graphene vs borophine — which coating?",
+    lead: "Three coatings, three different jobs. Here's how to choose based on your car, your driving, and your budget.",
+    metaDescription: "Side-by-side breakdown of ceramic, graphene, and borophine coatings. Durability, scratch resistance, heat dissipation, price. Pick the right coating for your car at Jos Car Care, Kochi.",
+    heroImage: "/media/hero_slides/ceramic-coating-water-beading-suv.webp",
+    intro: "All three are protective coatings. They differ in chemistry, durability, hardness, and price. Here's the practical decision tree.",
+  },
+  {
+    slug: "ppf-vs-ceramic-coating",
+    name: "PPF vs Ceramic Coating",
+    type: "comparison",
+    targetKeyword: "ppf vs ceramic coating",
+    eyebrow: "Decision Guide",
+    h1: "PPF or ceramic coating? Side-by-side for Kerala drivers.",
+    lead: "PPF is a physical film. Ceramic is a chemical bond. They protect against different things — and many customers do both.",
+    metaDescription: "PPF vs ceramic coating compared for Kerala drivers. Scratch resistance, durability, price, when to combine both. Free vehicle inspection at our Udayamperoor workshop.",
+    heroImage: "/media/hero_slides/ppf-paint-protection-film-kochi.webp",
+    intro: "Same goal — protect the paint. Different mechanisms. PPF stops physical damage; ceramic adds gloss and resists chemical contamination. Most premium-car customers do both.",
+  },
+  {
+    slug: "ceramic-ppf-combo",
+    name: "Ceramic + PPF Combo Package",
+    type: "bundle",
+    targetKeyword: "ceramic coating with ppf kochi",
+    eyebrow: "Bundle Package",
+    h1: "Ceramic + PPF — the full-protection package.",
+    lead: "Film on the front-end where stones hit. Ceramic everywhere else for gloss and chemical resistance. The package most premium-car customers book.",
+    metaDescription: "Ceramic coating + PPF combo package in Kochi. Full-front PPF plus full-body ceramic. The most popular bundle for new SUVs and luxury cars at Jos Car Care, Udayamperoor.",
+    heroImage: "/media/hero_slides/ppf-paint-protection-film-kochi.webp",
+    intro: "Two layers of protection. Film on impact zones, ceramic on everything else. The bundle saves time (single workshop visit) and money (versus booking separately).",
+  },
+  {
+    slug: "ppf-kochi",
+    name: "PPF Kochi",
+    type: "city-hub",
+    baseService: "ppf",
+    targetKeyword: "paint protection film kochi",
+    eyebrow: "Paint Protection Film · Kochi",
+    h1: "Paint protection film in Kochi.",
+    lead: "Self-healing film. Stops stone chips and scratches. Full-body, partial body, or impact-zone packs. Imported factory-spec material at our Udayamperoor workshop.",
+    metaDescription: "Paint Protection Film (PPF) in Kochi. Full-body, partial body, or impact-zone packages. Starts at ₹35,000. Free inspection at our Udayamperoor workshop.",
+    heroImage: "/media/hero_slides/ppf-paint-protection-film-kochi.webp",
+    intro: "PPF is a transparent self-healing film bonded to your car's paint. Where ceramic adds chemical resistance, PPF adds physical resistance — stops stone chips, road rash, and minor scratches that would otherwise reach the clear coat.",
+  },
+  {
+    slug: "painting-denting-combo",
+    name: "Painting + Denting (Restoration Lite)",
+    type: "bundle",
+    targetKeyword: "car painting and denting kochi",
+    eyebrow: "Bundle Package",
+    h1: "Full-body painting + denting & scratch repair.",
+    lead: "The recovery package for older cars or post-accident work. Body patchwork, dent reshape, full repaint, polish, and seal — all in our dust-controlled spray booth.",
+    metaDescription: "Car painting + denting & scratch repair combo package in Kochi. Full-body recovery for older cars and accident work. Free inspection at Jos Car Care, Udayamperoor.",
+    heroImage: "/media/hero_slides/car-painting-fresh-paint-kerala.webp",
+    intro: "Most full-repaint jobs come with body work — dents, scratch panels, accident damage. We handle both at our Udayamperoor workshop in a single project. Quote upfront, transparent pricing, written timeline.",
+  },
+  {
+    slug: "car-painting-kochi",
+    name: "Car Painting Kochi",
+    type: "city-hub",
+    baseService: "car-painting",
+    targetKeyword: "car painting cost kerala",
+    eyebrow: "Car Painting · Kochi",
+    h1: "Car painting across Kochi.",
+    lead: "Full-body or partial repainting in our dust-controlled spray booth. Factory-grade paint, multi-coat finish, polish and seal. Serving nine areas around Kochi from our Udayamperoor workshop.",
+    metaDescription: "Car painting in Kochi. Full-body or partial repainting. Factory-grade paint, dust-controlled spray booth. Serving 9 areas. WhatsApp for a same-day quote.",
+    heroImage: "/media/hero_slides/car-painting-fresh-paint-kerala.webp",
+    intro: "We handle car painting end-to-end — single panel, partial repaint, full body, accident recovery. Factory-grade paint matched to your existing colour, multi-coat finish, polish and seal in our dust-controlled spray booth.",
+  },
+  {
+    slug: "new-car-coating-kochi",
+    name: "New Car Coating Package — Pre-Delivery",
+    type: "timing",
+    targetKeyword: "new car ceramic coating kochi",
+    eyebrow: "Pre-Delivery Package",
+    h1: "New car coating — pre-delivery to driveway.",
+    lead: "Just bought a new car? Get ceramic protection on before the first wash. Same-day appointments available, factory paint stays factory-fresh.",
+    metaDescription: "New car ceramic coating in Kochi — protect your fresh delivery before the first wash. Same-day appointments. WhatsApp for a quote at Jos Car Care, Udayamperoor.",
+    heroImage: "/media/hero_slides/ceramic-coating-water-beading-suv.webp",
+    intro: "New car ceramic coating is the most efficient time to coat. Paint is fresh, no correction needed, the application bonds at full effectiveness. Most customers we coat pre-delivery save 1-2 days on application time and skip the correction stage entirely.",
+  },
+  {
+    slug: "used-car-detailing-kochi",
+    name: "Used Car Pre-Sale Detailing & Refurb",
+    type: "timing",
+    targetKeyword: "used car detailing before selling kochi",
+    eyebrow: "Pre-Sale Package",
+    h1: "Selling your car? Detail it first.",
+    lead: "Used cars sell for ~5-15% more after a proper detail. Foam wash, paint correction, interior treatment, minor dent fixes. Done before listing, paid back at sale.",
+    metaDescription: "Used car pre-sale detailing in Kochi. Increase resale value with paint correction, interior treatment, and minor body work. Quick turnaround at Jos Car Care, Udayamperoor.",
+    heroImage: "/media/hero_slides/car-detailing-services-udayamperoor.webp",
+    intro: "Used cars on OLX, Cars24, and the local market sell faster and at higher prices when properly detailed. We focus on what buyers actually inspect — paint condition, interior cleanliness, minor body damage, and a thorough wash.",
+  },
+  {
+    slug: "suv-ceramic-coating-kochi",
+    name: "SUV Ceramic Coating Specialist",
+    type: "vehicle",
+    targetKeyword: "suv ceramic coating kochi",
+    eyebrow: "SUV Specialist",
+    h1: "SUV ceramic coating — Fortuner to Phantom.",
+    lead: "Bigger surface, bigger investment, bigger return. Our SUV ceramic packages handle Fortuner, Innova, Harrier, XUV, Range Rover, and the rest.",
+    metaDescription: "SUV ceramic coating specialist in Kochi. Fortuner, Innova, Harrier, Range Rover. Multi-year protection sized for SUV surface area. Jos Car Care, Udayamperoor.",
+    heroImage: "/media/hero_slides/ceramic-coating-water-beading-suv.webp",
+    intro: "SUVs have more paint to protect, more glass to seal, more wheels to coat. Our SUV-specific ceramic packages account for surface area, brand-specific paint behaviour, and the heavier wear SUVs typically see.",
+  },
+  {
+    slug: "luxury-car-detailing-maradu",
+    name: "Luxury Car Detailing Maradu",
+    type: "qualifier",
+    targetKeyword: "luxury car detailing maradu",
+    eyebrow: "Luxury Specialist · Maradu",
+    h1: "Luxury car detailing in Maradu.",
+    lead: "Phantom, Range Rover, premium European SUVs — show-grade detailing for Maradu's high-AOV neighbourhoods. Booked appointments, no shared bays.",
+    metaDescription: "Luxury car detailing in Maradu. Specialist work on Rolls-Royce, Range Rover, BMW, Audi, Mercedes. Booked appointments at Jos Car Care, Udayamperoor.",
+    heroImage: "/media/hero_slides/graphene-coating-luxury-carbon-fiber.webp",
+    intro: "Luxury cars need luxury treatment — show-grade detailing, factory-spec products, no shared bays during the work. Our Maradu customers typically book appointments rather than walking in, and we run their cars through dedicated workflow.",
+  },
+  {
+    slug: "vintage-car-restoration-kerala",
+    name: "Project Car & Vintage Restoration Kerala",
+    type: "niche",
+    targetKeyword: "vintage car restoration kerala",
+    eyebrow: "Project Specialist",
+    h1: "Project car & vintage restoration in Kerala.",
+    lead: "Old sedans, classic SUVs, project cars. Body, paint, interior, coating — end-to-end restoration with documented progress. Customers travel from across Kerala for this work.",
+    metaDescription: "Vintage car and project restoration across Kerala. End-to-end body, paint, interior, and coating work. Documented progress. Jos Car Care, Udayamperoor.",
+    heroImage: "/real-photos/jos_ig_08.jpg",
+    intro: "Restoration is project work. Multi-week timelines, careful sourcing of trim and parts, transparent quotes that account for the unknowns. We document progress photographically, share updates over WhatsApp, and only invoice for what we actually do.",
+  },
+];
+
+export function getCombo(slug: string): Combo | undefined {
+  return combos.find((c) => c.slug === slug);
+}

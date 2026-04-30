@@ -1,0 +1,214 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import TrustRibbon from "../components/TrustRibbon.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppCTA from "../components/WhatsAppCTA.astro";
+import { site } from "../data/site";
+import { services } from "../data/services";
+import { reviews } from "../data/reviews";
+import { areas } from "../data/areas";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": `${site.url}/#organization`, name: site.name, url: site.url, sameAs: [site.social.instagram] },
+    { "@type": "WebSite", "@id": `${site.url}/#website`, url: site.url, name: site.name, publisher: { "@id": `${site.url}/#organization` }, inLanguage: "en-IN" },
+    {
+      "@type": ["LocalBusiness", "AutomotiveBusiness"],
+      "@id": `${site.url}/#business`,
+      name: site.name,
+      description: site.description,
+      url: site.url,
+      telephone: site.phone,
+      address: { "@type": "PostalAddress", streetAddress: site.address.street, addressLocality: site.address.locality, addressRegion: site.address.region, postalCode: site.address.postalCode, addressCountry: site.address.country },
+      geo: { "@type": "GeoCoordinates", latitude: site.geo.latitude, longitude: site.geo.longitude },
+      openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], opens: "09:00", closes: "19:00" }],
+      areaServed: areas.map(a => ({ "@type": "Place", name: a.name })),
+      priceRange: "₹₹",
+      foundingDate: site.founded,
+      aggregateRating: { "@type": "AggregateRating", ratingValue: String(site.rating.value), reviewCount: String(site.rating.count), bestRating: "5", worstRating: "1" },
+      sameAs: [site.social.instagram],
+    },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: site.url }] },
+  ],
+};
+---
+
+<BaseLayout title={`${site.name} — ${site.tagline}`} description={site.description} schemaJson={schema} fixedHeader={true}>
+  <Header fixed={true} />
+
+  <section class="hero-home">
+    <div class="hero-stage">
+      <div class="hero-slide active" style="background-image: url('/media/hero_slides/premium-car-detailing-kochi-workshop.webp');" aria-hidden="true"></div>
+      <div class="hero-slide" style="background-image: url('/media/hero_slides/graphene-coating-luxury-carbon-fiber.webp');" aria-hidden="true"></div>
+      <div class="hero-slide" style="background-image: url('/media/hero_slides/ppf-paint-protection-film-kochi.webp');" aria-hidden="true"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grain"></div>
+
+    <div class="container hero-content">
+      <div class="hero-eyebrow eyebrow">{site.name} · Udayamperoor · Since {site.founded}</div>
+      <h1 class="h1">
+        <span class="line">Coatings.</span>
+        <span class="line">Paint.</span>
+        <span class="line">Polish.</span>
+        <span class="line"><span class="accent">For Kerala's cars.</span></span>
+      </h1>
+      <p class="lead hero-lead">From our hex-lit Udayamperoor workshop to nine areas around Kochi. WhatsApp for a same-day quote.</p>
+      <div class="hero-cta-row">
+        <WhatsAppCTA />
+        <a href="#work" class="cta-secondary">See our work ↓</a>
+      </div>
+      <div class="hero-trust-line">
+        <span class="tabular">{site.rating.value} ★ from {site.rating.count} Google reviews</span>
+        <span>Free vehicle inspection</span>
+        <span>Workshop in Udayamperoor</span>
+      </div>
+    </div>
+
+    <div class="hero-indicators" role="tablist" aria-label="Hero slides">
+      <button class="active" data-slide="0" aria-label="Slide 1"></button>
+      <button data-slide="1" aria-label="Slide 2"></button>
+      <button data-slide="2" aria-label="Slide 3"></button>
+    </div>
+  </section>
+
+  <TrustRibbon />
+
+  <section class="services-bg" id="services">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">What we do</div>
+          <h2 class="h2">Eleven services. One workshop.<br />Daily driver to project car.</h2>
+        </div>
+        <p class="meta">Tap any service for the dedicated page — what we do, where, and how to book. Or just WhatsApp us your make-model and we'll quote the same day.</p>
+      </div>
+      <div class="services-grid reveal-stagger">
+        {services.map(svc => (
+          <a class="service-tile" href={`/${svc.slug}-udayamperoor`} aria-label={svc.name}>
+            <div class="service-tile-img" style={`background-image:url('${svc.image}');`}></div>
+            <div class="service-tile-overlay"></div>
+            <div class="service-tile-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+            <div class="service-tile-content">
+              <div class="service-tile-num">{svc.number}</div>
+              <h3>{svc.name}</h3>
+              <p>{svc.outcomeDesc}</p>
+            </div>
+          </a>
+        ))}
+        <div class="service-tile cta-tile">
+          <h3>Not sure which?</h3>
+          <p>WhatsApp us your make-model and we'll recommend the right tier.</p>
+          <a href="https://wa.me/919544874433?text=Hi%2C%20which%20service%20is%20right%20for%20my%20car%3F">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.5 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.099-.471-.15-.67.15-.197.297-.767.964-.94 1.162-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.002-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.83 9.83 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+            WhatsApp us
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Real work · From the floor</div>
+          <h2 class="h2">Cars we've worked on this year.</h2>
+        </div>
+        <p class="meta">Phone-shot from the floor of our Udayamperoor workshop. Every car here was a real job.</p>
+      </div>
+      <div class="masonry reveal-stagger">
+        <figure class="work-tile"><img src="/real-photos/jos_ig_12.jpg" alt="BMW 3-Series at Jos Car Care" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">BMW 3-Series</span><span class="meta-cap">Coating · Udayamperoor workshop</span></figcaption></figure>
+        <figure class="work-tile"><img src="/real-photos/3.png" alt="Owner with Rolls-Royce Phantom at Jos Car Care" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">Rolls-Royce Phantom</span><span class="meta-cap">Premium detail</span></figcaption></figure>
+        <figure class="work-tile"><img src="/real-photos/1.png" alt="White Toyota Fortuner at Jos Car Care" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">Toyota Fortuner</span><span class="meta-cap">In our workshop</span></figcaption></figure>
+        <figure class="work-tile"><img src="/real-photos/jos_ig_08.jpg" alt="Tata Harrier EV handover at Jos Car Care" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">Tata Harrier EV</span><span class="meta-cap">Customer handover</span></figcaption></figure>
+        <figure class="work-tile"><img src="/real-photos/jos_ig_06.jpg" alt="Red VW Polo at Jos Car Care" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">VW Polo</span><span class="meta-cap">After service</span></figcaption></figure>
+        <figure class="work-tile"><img src="/real-photos/jos_ig_07.jpg" alt="Mercedes E-Class outside Jos Car Care storefront" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">Mercedes E-Class</span><span class="meta-cap">Outside our storefront</span></figcaption></figure>
+        <figure class="work-tile"><img src="/real-photos/2.png" alt="Customer handover at Jos Car Care" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">Customer handover</span><span class="meta-cap">In our workshop</span></figcaption></figure>
+        <figure class="work-tile"><img src="/real-photos/4.png" alt="Audi interior after detailing" loading="lazy" /><div class="grain"></div><figcaption class="caption"><span class="vehicle">Audi interior</span><span class="meta-cap">After detailing</span></figcaption></figure>
+      </div>
+      <div class="work-foot"><a href={site.social.instagram} target="_blank" rel="noopener">See more on Instagram →</a></div>
+    </div>
+  </section>
+
+  <section id="areas">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Where we serve</div>
+          <h2 class="h2">From Udayamperoor — to nine areas around Kochi.</h2>
+        </div>
+        <p class="meta">Drop your car at the workshop. We're on Police Station Road, opposite Manakunnam Village Office.</p>
+      </div>
+      <div class="area-cards reveal-stagger">
+        {areas.map((area, i) => (
+          <a class={`area-card ${area.isWorkshop ? 'featured' : ''}`} href={area.hasSL["car-painting"] ? `/car-painting-${area.slug}` : "/car-painting-kochi"}>
+            <div class="area-num">{String(i + 1).padStart(2, "0")}</div>
+            <h3>{area.name}</h3>
+            <p>{area.shortContext}</p>
+            <span class={`arrow ${!area.hasSL["car-painting"] ? 'muted' : ''}`}>{area.hasSL["car-painting"] ? 'Read details →' : 'Drop at workshop ↗'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials" id="reviews">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">From our Google reviews</div>
+          <h2 class="h2">What customers say after picking up.</h2>
+        </div>
+        <p class="meta">{site.rating.value} stars from {site.rating.count} Google reviews. <a href="/reviews" style="color:var(--accent); border-bottom:1px solid currentColor;">Read all →</a></p>
+      </div>
+      <div class="test-grid reveal-stagger">
+        {reviews.filter(r => r.isFeatured).slice(0, 3).map(r => (
+          <article class="test-card">
+            <span class="test-stars" aria-label="5 stars">
+              {[...Array(5)].map(() => (
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              ))}
+            </span>
+            <p class="test-body">{r.body}</p>
+            <div class="test-author">
+              <div class="test-avatar">{r.initials}</div>
+              <div>
+                <div class="test-meta-name">{r.name}</div>
+                <div class="test-meta-sub">{r.date} · {r.source}</div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta" id="visit">
+    <div class="container">
+      <div class="final-grid">
+        <div class="reveal">
+          <div class="eyebrow" style="margin-bottom:1.25rem;">Ready when you are</div>
+          <h2 class="h2">Drop your car at our Udayamperoor workshop.</h2>
+          <p class="lead">Or WhatsApp photos for a same-day quote — no commitment, just a real number.</p>
+          <div class="hero-cta-row">
+            <WhatsAppCTA />
+            <a href={`tel:${site.phone}`} class="cta-secondary">Or call {site.phoneDisplay}</a>
+          </div>
+        </div>
+        <div class="contact-card reveal" style="min-height:280px;">
+          <h3>Visit the workshop</h3>
+          <iframe src="https://maps.google.com/maps?q=Jos+Car+Care+Udayamperoor&output=embed&z=15" width="100%" height="200" style="border:0;border-radius:8px;filter:invert(0.92) hue-rotate(180deg) brightness(0.95) contrast(0.95);" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div style="margin-top:1rem; font-size:0.875rem;">
+            <div style="font-weight:600; color:var(--fg-cream);">{site.address.full}</div>
+            <div style="color:var(--fg-cream-dim); margin-top:0.25rem;">{site.hours.days} · {site.hours.time} · <span class="tabular">{site.phoneDisplay}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
