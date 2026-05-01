@@ -161,6 +161,19 @@ export const combos: Combo[] = [
     heroImage: "/real-photos/jos_ig_08.jpg",
     intro: "Restoration is project work. Multi-week timelines, careful sourcing of trim and parts, transparent quotes that account for the unknowns. We document progress photographically, share updates over WhatsApp, and only invoice for what we actually do.",
   },
+  {
+    slug: "undercoating-kochi",
+    name: "Underbody Coating Kochi",
+    type: "city-hub",
+    baseService: "undercoating",
+    targetKeyword: "underbody coating kochi",
+    eyebrow: "Underbody Coating · Kochi",
+    h1: "Underbody coating across Kochi.",
+    lead: "Anti-rust treatment for the chassis plus sound dampening for the cabin. Built for Kerala's coastal humidity, monsoon-flooded roads, and salt-air corridors. Available for individual cars and fleet / commercial vehicle programs from our Udayamperoor workshop.",
+    metaDescription: "Underbody coating in Kochi — anti-rust + sound dampening. Coastal-Kerala protection from our Udayamperoor workshop. Individual cars and fleet programs. WhatsApp for an assessment quote.",
+    heroImage: "/media/service_images/undercoating.webp",
+    intro: "Underbody coating does two jobs at once. The anti-rust layer seals the chassis and floor pan against the moisture, salt, and grit that wear out the metal underneath your car — particularly relevant in Kerala, where coastal humidity and monsoon road-flooding accelerate corrosion. The same coating dampens vibration, cutting cabin noise on rough roads. Single application, both benefits.",
+  },
 ];
 
 export function getCombo(slug: string): Combo | undefined {

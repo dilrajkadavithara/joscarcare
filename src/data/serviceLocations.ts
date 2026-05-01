@@ -1,4 +1,4 @@
-// 25 service-location combinations from site_plan.md
+// 28 service-location combinations from site_plan.md
 export const serviceLocations: { service: string; area: string }[] = [
   { service: "ceramic-coating", area: "udayamperoor" },
   { service: "ceramic-coating", area: "tripunithura" },
@@ -25,6 +25,9 @@ export const serviceLocations: { service: string; area: string }[] = [
   { service: "foam-wash", area: "irumpanam" },
   { service: "ceramic-coating", area: "thiruvaniyoor" },
   { service: "foam-wash", area: "thiruvaniyoor" },
+  { service: "undercoating", area: "udayamperoor" },
+  { service: "undercoating", area: "tripunithura" },
+  { service: "undercoating", area: "maradu" },
 ];
 
 // URL slug pattern: {service-slug}-{area-slug}
@@ -34,7 +37,7 @@ export function slLink(service: string, area: string): string {
 
 // Reverse: given a slug like "ceramic-coating-tripunithura", get { service, area }
 export function parseSlSlug(slug: string): { service: string; area: string } | null {
-  const services = ["ceramic-coating", "graphene-coating", "borophine-coating", "ppf", "car-painting", "paint-correction", "scratch-dent-repair", "foam-wash", "exterior-detailing", "interior-detailing", "restoration"];
+  const services = ["ceramic-coating", "graphene-coating", "borophine-coating", "ppf", "car-painting", "paint-correction", "scratch-dent-repair", "foam-wash", "exterior-detailing", "interior-detailing", "restoration", "undercoating"];
   const areas = ["udayamperoor", "tripunithura", "maradu", "mulanthuruthy", "thiruvankulam", "chottanikkara", "irumpanam", "amballoor", "thiruvaniyoor"];
   for (const s of services) {
     if (slug.startsWith(s + "-")) {

@@ -152,6 +152,18 @@ export const services: Service[] = [
     snapshot: { stages: "6+", stagesDesc: "Body, paint, interior, coating, polish.", time: "10–20", timeUnit: "days", timeDesc: "Project work. Timeline confirmed at inspection.", priceFrom: "Custom", priceDesc: "Varies widely. WhatsApp for assessment." },
     hasTiers: false,
   },
+  {
+    slug: "undercoating",
+    number: "12",
+    name: "Underbody Coating",
+    shortDesc: "Anti-rust and sound dampening for the chassis. Coastal-Kerala protection.",
+    longDesc: "Underbody coating combines anti-rust treatment for the chassis and floor pan with sound-dampening properties that cut road noise inside the cabin. Sprayed onto the cleaned underbody and cured into a tough, flexible layer. Particularly relevant for cars driven in Kerala's coastal humidity, monsoon-flooded roads, and salt-air corridors. Available for individual cars and fleet / commercial vehicle programs.",
+    outcomeDesc: "Anti-rust + sound dampening. Underbody protected against monsoon and coastal corrosion.",
+    image: "/media/service_images/undercoating.webp",
+    galleryImage: "/media/service_images/undercoating.webp",
+    snapshot: { stages: "4", stagesDesc: "Underbody cleaning, masking, application, curing.", time: "Custom", timeUnit: "", timeDesc: "Confirmed after inspection. Drop-off; we WhatsApp updates through the day.", priceFrom: "Custom", priceDesc: "Varies by car size and coverage. WhatsApp for an assessment quote." },
+    hasTiers: false,
+  },
 ];
 
 export function getService(slug: string): Service | undefined {

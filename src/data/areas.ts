@@ -35,7 +35,7 @@ export const areas: Area[] = [
       { q: "Where exactly is your Udayamperoor workshop?", a: "Police Station Road, Udayamperoor 682305 — directly opposite Manakunnam Village Office. The yellow Jos Car Care signage on the front is hard to miss. Parking is at the workshop." },
       { q: "Do you handle pre-delivery coating for new cars?", a: "Yes — pre-delivery ceramic is the most efficient time to coat. Paint is fresh, no correction needed, application bonds at full effectiveness. Most Udayamperoor customers we coat pre-delivery save a day on the timeline. Bring the new car straight from the showroom." }
     ],
-    hasSL: { "ceramic-coating": true, "graphene-coating": true, "ppf": true, "car-painting": true, "paint-correction": true, "scratch-dent-repair": true, "foam-wash": true, "interior-detailing": false, "restoration": true },
+    hasSL: { "ceramic-coating": true, "graphene-coating": true, "ppf": true, "car-painting": true, "paint-correction": true, "scratch-dent-repair": true, "foam-wash": true, "interior-detailing": false, "restoration": true, "undercoating": true },
   },
   {
     slug: "tripunithura",
@@ -60,7 +60,7 @@ export const areas: Area[] = [
       { q: "How long is the drive from Tripunithura to your Udayamperoor workshop?", a: "12–18 minutes off-peak via SH-15. Add 10 minutes during evening rush hour (5–7 pm). Most Tripunithura customers drop the car in the morning and we WhatsApp updates through the day." },
       { q: "Can you handle older sedans being kept long-term in Tripunithura?", a: "Yes — Tripunithura has a fair mix of cars that have been in the family 8–15 years. We do paint correction, full repaint, and ceramic protection on these. The 5-year ceramic tier with annual decontamination is the typical recommendation for long-keep cars in this area." }
     ],
-    hasSL: { "ceramic-coating": true, "ppf": true, "car-painting": true, "foam-wash": true, "interior-detailing": true },
+    hasSL: { "ceramic-coating": true, "ppf": true, "car-painting": true, "foam-wash": true, "interior-detailing": true, "undercoating": true },
   },
   {
     slug: "maradu",
@@ -85,7 +85,7 @@ export const areas: Area[] = [
       { q: "Do you take luxury cars by appointment, not walk-in?", a: "For Maradu's Range Rovers, Phantoms, Mercedes S-class and similar — yes, we run booked appointments with no shared bay during the work. WhatsApp us with photos, we lock in the slot, and the car gets the dedicated workflow it needs. Walk-ins are fine for hatchback foam wash but not for show-grade detailing on a luxury vehicle." },
       { q: "How does the drive from Maradu to your workshop work during evening rush?", a: "Honest answer: NH-66 between Vyttila and Kundannoor backs up between 5 and 7 pm. Drop-off works best before 11 am or after 8 pm. We can also arrange WhatsApp pickup for premium clients in central Maradu — message us with your location." }
     ],
-    hasSL: { "ceramic-coating": true, "ppf": true, "car-painting": true },
+    hasSL: { "ceramic-coating": true, "ppf": true, "car-painting": true, "undercoating": true },
   },
   {
     slug: "mulanthuruthy",
