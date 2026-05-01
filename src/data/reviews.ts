@@ -31,14 +31,14 @@ export const reviews: Review[] = [
     serviceContext: ["scratch-dent-repair", "paint-correction", "ceramic-coating"],
   },
   {
-    name: "PEPOGRAPHY",
-    initials: "PG",
-    body: "Good job and affordable.",
-    date: "Local Guide · 130 reviews · A year ago",
+    name: "Renraj Mani",
+    initials: "RM",
+    body: "Took my Hyundai Creta to Jos Car Care for full body repainting. Excellent finish — colour match was spot-on, multi-coat work is professional, and the dust-controlled spray booth makes a real difference. Fair pricing, no hidden charges. If you're looking for reliable car painting in Udayamperoor or nearby panchayats, Jos Car Care is the place.",
+    date: "5 hours ago",
     source: "Google review",
     stars: 5,
     isFeatured: true,
-    serviceContext: ["foam-wash", "exterior-detailing", "ceramic-coating"],
+    serviceContext: ["car-painting", "scratch-dent-repair"],
   },
   {
     name: "Joseph George",
@@ -60,7 +60,7 @@ export const reviews: Review[] = [
 
 export const ribbonQuotes = [
   '"Excellent service." — Kailasnadh Narayanan',
-  '"Good job and affordable." — PEPOGRAPHY, Local Guide',
+  '"Excellent finish — colour match was spot-on." — Renraj Mani',
   '"Neat and fast service." — Joseph George, Local Guide',
   '"Took my Ford Figo for scratch removal — completely gone." — Nimil Raj',
 ];
